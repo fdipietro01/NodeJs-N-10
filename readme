@@ -1,0 +1,28 @@
+El proyecto está debidamente conectado a MongoAtlas, y todas los endpoints solicitados en la consigna están presentes.
+Para poder hacer accesible estos endpoints desde una interfaz gráfica, cree un proyecto de frontend desarrollado en React que puede encontrarse en https://github.com/fdipietro01/FutEcommerce.
+
+En manejo del login/register en esta oportunidad se utiliza jwt como estrategia de autenticación/autorización
+
+A continuación una breve guía de las rutas:
+
+-http://localhost:8081/session
+Router session
+Este router permite gestionar la sesión del usario mendiante la creación y posterior la validación del token creado por jwt. La contraseña se almacena hasheada.
+
+-http://localhost:8081/api/productos
+Router productos
+Esta router muestra una serie los productos disponibles paginados, con posibles filtros de la base de datos.
+Por el lado del administrador, validación mediante por estrategia de customizada de passport, permite desde el menú entrar a la vista que admnistra el catálogo de productos en la base de datos usuario logueado. y un botón para finalizar la sesión. También muestra un formulario para agregar productos en tiempo real. La vista está paginada con un limt ajustado por default a 5 resultados.
+Si no hubiese una sesión iniciada, la pagina redirige al login.
+
+-http://localhost:8081/api/carts
+Router carts
+Esta router permite crear un nuevo carrito y obtener su numero de id. Además de agregar productos, eliminarlos y vaciar totalmente el carrito. La vista requiere autenticación. Finalmente permite concretar una compra siempre y cuando exista stock de los productos seleccionados.
+
+-http://localhost:8081/usuarios
+Router users
+Este router permite consultar la información del usuario logueado, vincular un carrito al usuario y eventualmente vincular también el ticket de la compra generado.
+
+-http://localhost:8081/mail
+Router mail
+Endpoint para enviar un mail mediante el servicio de Twilio
