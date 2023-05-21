@@ -1,4 +1,7 @@
 const { Cart, Product, Ticket, User } = require("../service/index");
+const Error = require("../errors/customError");
+const Errors = require("../errors/errorEnum");
+const { createEditCartErrorInfo } = require("../errors/infoLogsError");
 
 class CartController {
   async crearCarrito(req, res) {
@@ -18,9 +21,17 @@ class CartController {
   async updateProductQuantityFromCart(req, res) {
     const { cid, pid, quantity } = req.body;
     try {
+      if (!cid || !pid || !quantity)
+        Error.createError({
+          name: "Error al actualizar carrito",
+          message: "parámetros inválidos",
+          cause: createEditCartErrorInfo(req.body),
+          code: Errors.PARAM_ERROR,
+        });
       await Cart.updateProductQuantityFromCart(cid, pid, quantity);
       res.status(200).send({ status: "success" });
     } catch (err) {
+      console.log(err);
       res.status(400).send({ error: err.message });
     }
   }

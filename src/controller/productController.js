@@ -1,5 +1,7 @@
 const { Product } = require("../service/index");
-const port = process.env.PORT;
+const Error = require("../errors/customError");
+const Errors = require("../errors/errorEnum");
+const { createProductErrorInfo } = require("../errors/infoLogsError");
 
 class ProductController {
   async getProducts(req, res) {
@@ -31,12 +33,38 @@ class ProductController {
   }
 
   async addProduct(req, res) {
-    const producto = req.body;
-    if (req.body.status === undefined) req.body.status = true;
+    const {
+      title,
+      category,
+      price,
+      stock,
+      description,
+      code,
+      thumbnail,
+      status,
+    } = req.body;
     try {
-      await Product.addProduct(producto);
+      if (
+        !title ||
+        !category ||
+        !price ||
+        !stock ||
+        !description ||
+        !code ||
+        !thumbnail ||
+        !status
+      )
+        Error.createError({
+          name: "Error al crear producto",
+          message: "Error con los parámetros",
+          cause: createProductErrorInfo(req.body),
+          code: Errors.INVALID_TYPES,
+        });
+
+      await Product.addProduct(req.body);
       res.status(200).send({ status: "succes" });
     } catch (err) {
+      console.log(err);
       res.status(400).json({
         message: err.message,
       });

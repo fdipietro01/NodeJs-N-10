@@ -6,6 +6,7 @@ const sessionsRouter = require("./routerSession");
 const mailRouter = require("./routerMail");
 const routerChat = require("./routerChat");
 const routerMocking = require("./routerMocking");
+const errorHandler = require("../middlewares/routeErrorMiddleware");
 
 const router = Router();
 
